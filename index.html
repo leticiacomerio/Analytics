@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conecta Fapes · Análise de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#0d1220;--bg2:#162042;--card:#18203a;--card2:#22325e;
+  --lime:#a8c83e;--blue:#3a4f9c;--sky:#7f9cec;
+  --text:#eef1f7;--muted:#a3abbf;--dim:#6f7891;--good:#5fd18a;--bad:#f0706b;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:var(--bg1);overflow:hidden}
+.deck{height:100%;position:relative}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+  padding:clamp(24px,6vw,96px);padding-top:max(clamp(24px,6vw,96px),env(safe-area-inset-top));
+  padding-bottom:max(clamp(56px,6vw,96px),env(safe-area-inset-bottom));
+  background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 100%);overflow-y:auto}
+.slide.active{display:flex}
+.slide.end{background:linear-gradient(150deg,#16203f 0%,#2a3a70 100%)}
+.inner{width:100%;max-width:1280px;margin:0 auto}
+h1{font-weight:800;font-size:clamp(2.6rem,8vw,6rem);line-height:1.05;letter-spacing:-.01em}
+h1 .a{color:var(--lime);display:block}h1 .b{color:var(--blue);display:block}
+h2{font-weight:700;font-size:clamp(1.8rem,4vw,3rem);margin-bottom:clamp(16px,3vw,36px)}
+h2 em{font-style:normal;color:var(--lime)}
+.kicker{color:var(--lime);font-weight:700;letter-spacing:.14em;font-size:clamp(.75rem,1.4vw,1rem);margin-bottom:24px}
+.lead{color:var(--muted);font-size:clamp(1rem,2vw,1.4rem);line-height:1.6;margin-top:32px;max-width:56ch}
+.logo{position:absolute;right:clamp(24px,5vw,72px);bottom:clamp(64px,7vw,72px);font-weight:800;font-size:1.6rem;display:flex;align-items:center;gap:6px}
+.logo svg{width:44px;height:44px}
+.grid{display:grid;gap:clamp(12px,1.8vw,24px)}
+.g3{grid-template-columns:1fr 1.3fr 1.4fr}
+.gacc{grid-template-columns:1fr 2.2fr}
+.guse{grid-template-columns:1.5fr 1.4fr}
+.guse2{grid-template-columns:1fr 1.8fr}
+.gend{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);border-radius:14px;padding:clamp(16px,2vw,30px)}
+.end .card{background:var(--card2);min-height:clamp(120px,18vw,240px)}
+.ct{color:var(--sky);font-weight:600;font-size:1.05rem;margin-bottom:10px}
+.big{font-weight:700;font-size:clamp(2rem,4vw,3.2rem);line-height:1.1}
+.big.l{color:var(--lime);font-weight:800}
+.sub{color:var(--muted);font-size:.9rem}
+.lbl{color:var(--text);margin:4px 0 18px}
+.bar{height:10px;border-radius:6px;background:var(--lime);margin:6px 0 18px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;font-size:.95rem}
+.row b{font-weight:700}.row span span{color:var(--muted)}
+.note{color:var(--sky);font-size:.9rem;margin-top:8px}
+.stack{display:grid;gap:clamp(12px,1.8vw,20px)}
+.hb{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:12px;margin:8px 0;font-weight:700;font-size:.95rem}
+.hb div{display:flex;align-items:center;gap:10px;font-weight:400;color:var(--muted)}
+.hb i{display:block;height:32px;border-radius:6px;background:var(--lime)}
+.hb i.m{background:var(--sky)}
+.pg{font-size:1rem;line-height:1.75}.pg b{font-weight:700}.pg .l{color:var(--lime);font-weight:700}
+.src h4{color:var(--lime);font-weight:700;margin-top:8px}.src p{color:var(--muted);font-size:.92rem}
+.perf{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.perf ul{list-style:none;font-size:.95rem;line-height:1.7}.perf b{font-weight:700}
+.w{color:var(--sky)}.g{color:var(--good)}.r{color:var(--bad)}
+.end h3{color:var(--lime);font-weight:800;font-size:1.25rem;margin-bottom:8px}
+.end p{line-height:1.55}
+.foot{position:absolute;left:clamp(24px,6vw,96px);bottom:max(20px,env(safe-area-inset-bottom));color:var(--dim);font-size:.85rem}
+.nav{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;z-index:5}
+.nav button{font:inherit;background:var(--card);color:var(--text);border:1px solid #2b3557;border-radius:8px;width:40px;height:40px;cursor:pointer}
+.nav button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.nav span{color:var(--dim);font-size:.85rem;min-width:44px;text-align:center}
+@media (max-width:900px){
+  body{overflow:auto}
+  .g3,.gacc,.guse,.guse2,.gend{grid-template-columns:1fr}
+  .slide{justify-content:flex-start}
+  .logo{position:static;margin-top:32px}
+  .foot{position:static;margin-top:24px}
+}
+</style>
+</head>
+<body>
+<main class="deck" id="deck">
+
+<section class="slide active" aria-label="Capa">
+  <div class="inner">
+    <p class="kicker">GOOGLE ANALYTICS · 1 JUN – 23 OUT 2026</p>
+    <h1><span class="a">Conecta Fapes</span><span class="b">Análise de Dados</span></h1>
+    <p class="lead">Sistema de gestão de fomento, projetos e bolsas.<br>Quem usa a plataforma, como acessa e o que faz nela — 864 usuários ativos nos últimos 5 meses.</p>
+  </div>
+  <div class="logo" aria-label="LEDS"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M4 18l14-4 4 10-14 4z" fill="#2c3f9a"/><path d="M18 8l16-4-6 12-14 0z" fill="#1f9d55"/><path d="M22 18l10 0-4 22-8-8z" fill="#e5322d"/></svg>LEDS</div>
+</section>
+
+<section class="slide" aria-label="Público">
+  <div class="inner">
+    <h2>Público: <em>864 usuários ativos</em></h2>
+    <div class="grid g3">
+      <div class="card">
+        <p class="ct">Gênero</p>
+        <p class="big">53,7%</p><p class="lbl">mulheres</p>
+        <p class="big">46,3%</p><p class="lbl">homens</p>
+      </div>
+      <div class="card">
+        <p class="ct">Idade</p>
+        <p>18–24 · <b>43,1%</b></p><div class="bar" style="width:86%"></div>
+        <p>25–34 · <b>30,5%</b></p><div class="bar" style="width:61%"></div>
+        <p>35–44 · <b>19,4%</b></p><div class="bar" style="width:39%"></div>
+        <p>45–54 · <b>7,0%</b></p><div class="bar" style="width:14%"></div>
+        <p class="sub">Entre os 341 com idade identificada</p>
+      </div>
+      <div class="card">
+        <p class="ct">Cidades</p>
+        <div class="row"><b>Vitória</b><span>347 <span>(40,2%)</span></span></div>
+        <div class="row"><b>Serra</b><span>158 <span>(18,3%)</span></span></div>
+        <div class="row"><b>Vila Velha</b><span>153 <span>(17,7%)</span></span></div>
+        <div class="row"><b style="color:var(--muted)">(não definido)</b><span>70 <span>(8,1%)</span></span></div>
+        <div class="row"><b>Cachoeiro de Itapemirim</b><span>38 <span>(4,4%)</span></span></div>
+        <div class="row"><b>Linhares</b><span>35 <span>(4,1%)</span></span></div>
+        <div class="row"><b>São Paulo</b><span>35 <span>(4,1%)</span></span></div>
+        <div class="row"><b>Colatina</b><span>28 <span>(3,2%)</span></span></div>
+        <div class="row"><b>Rio de Janeiro</b><span>25 <span>(2,9%)</span></span></div>
+        <div class="row"><b>Viana</b><span>24 <span>(2,8%)</span></span></div>
+        <p class="note">Grande Vitória: 79%</p>
+      </div>
+    </div>
+  </div>
+  <p class="foot">Fonte: GA4 · 1 jun – 23 out 2026</p>
+</section>
+
+<section class="slide" aria-label="Acesso">
+  <div class="inner">
+    <h2>Acesso</h2>
+    <div class="grid gacc">
+      <div class="stack">
+        <div class="card"><p class="big l">71%</p><p>usam Desktop</p><p class="sub">28,4% mobile · 0,6% tablet</p></div>
+        <div class="card"><p class="big l">58,5%</p><p>usam Windows</p><p class="sub">Android 16,2% · iOS 12,7% · Mac 6,1%</p></div>
+        <div class="card"><p class="big l">74%</p><p>usam Chrome</p><p class="sub">depois Safari, Edge e Firefox</p></div>
+      </div>
+      <div class="card">
+        <p class="ct">Resoluções de tela mais comuns</p>
+        <div class="hb">1920x1080<div><i style="width:80%"></i>270 (31,3%)</div></div>
+        <div class="hb">1536x864<div><i style="width:31%"></i>104 (12,0%)</div></div>
+        <div class="hb">1366x768<div><i style="width:26%"></i>87 (10,1%)</div></div>
+        <div class="hb">390x844<div><i class="m" style="width:10.5%"></i>35 (4,1%)</div></div>
+        <div class="hb">384x832<div><i class="m" style="width:10%"></i>34 (3,9%)</div></div>
+        <div class="hb">1280x720<div><i style="width:8%"></i>27 (3,1%)</div></div>
+        <div class="hb">1600x900<div><i style="width:7.5%"></i>25 (2,9%)</div></div>
+        <p class="note">Azul = telas de celular</p>
+      </div>
+    </div>
+  </div>
+  <p class="foot">Fonte: GA4 · 1 jun – 23 out 2026</p>
+</section>
+
+<section class="slide" aria-label="Uso">
+  <div class="inner">
+    <h2>Uso</h2>
+    <div class="grid guse">
+      <div class="card pg">
+        <p class="ct">Páginas mais vistas (% de 21.726 visualizações)</p>
+        <p>/login · <span class="l">27,5%</span></p>
+        <p>/minhas-informacoes · <b>22,4%</b></p>
+        <p>/início · <b>20,1%</b></p>
+        <p>/minha-equipe · <b>11,9%</b></p>
+        <p>/meu-projeto · <b>4,1%</b></p>
+        <p>/pagamentos · <b>4,1%</b></p>
+        <p>/guia-do-usuario · <b>0,75%</b></p>
+        <p>/remanejamento · <b>0,47%</b></p>
+      </div>
+      <div class="card src">
+        <p class="ct">Como os usuários chegam</p>
+        <h4>Direto · 500 (58%)</h4><p>Digitou o endereço, favorito ou link sem origem.</p>
+        <h4>Busca orgânica · 312 (36%)</h4><p>Resultados não pagos do Google e outros.</p>
+        <h4>Referência · 50 (6%)</h4><p>Link em outro site (ex.: portal da Fapes).</p>
+      </div>
+    </div>
+    <div class="grid guse2" style="margin-top:clamp(12px,1.8vw,24px)">
+      <div class="card"><p class="ct">Tempo médio de uso</p><p class="big l">6 min 13 s</p><p class="sub">de engajamento por usuário</p></div>
+      <div class="card">
+        <div class="row"><p class="ct">Performance do sistema</p><span class="sub">7.086 pageviews</span></div>
+        <div class="perf">
+          <p class="big l">77/100</p>
+          <ul><li><b>LCP 3,8 s</b> · <span class="w">a melhorar</span></li><li><b>INP 310 ms</b> · <span class="w">a melhorar</span></li><li><b>CLS 0,022</b> · <span class="g">bom</span></li></ul>
+        </div>
+        <p class="sub" style="margin-top:8px"><span class="g">47,3% boas</span> · <span class="w">47,4% a melhorar</span> · <span class="r">5,3% ruins</span></p>
+      </div>
+    </div>
+  </div>
+  <p class="foot">Fonte: GA4 · 1 jun – 23 out 2026</p>
+</section>
+
+<section class="slide end" aria-label="Conclusões">
+  <div class="inner">
+    <h2>Conclusões</h2>
+    <div class="grid gend">
+      <div class="card"><h3>Sem páginas de erro</h3><p>O usuário não é mais levado para páginas de erro (403, 404 e 500).</p></div>
+      <div class="card"><h3>De 0 a 28% no celular</h3><p>De um sistema não responsivo para 28% dos usuários no mobile.</p></div>
+      <div class="card"><h3>Responsividade</h3><p>As telas funcionam em desktop, mobile, tablet e TV.</p></div>
+      <div class="card"><h3>Espaço no interior</h3><p>76% está na Grande Vitória: é possível expandir para o interior.</p></div>
+      <div class="card"><h3>Sistema mais rápido</h3><p>Nota 77/100: dá para deixar o sistema ainda mais ágil.</p></div>
+      <div class="card"><h3>Busca em IA</h3><p>Há usuários que encontram o sistema em pesquisas com IA, como o ChatGPT.</p></div>
+    </div>
+  </div>
+  <p class="foot">Fonte: GA4 · 1 jun – 23 out 2026</p>
+</section>
+
+</main>
+<nav class="nav" aria-label="Navegação dos slides">
+  <button id="prev" aria-label="Slide anterior">‹</button>
+  <span id="count">1 / 5</span>
+  <button id="next" aria-label="Próximo slide">›</button>
+</nav>
+<script>
+(function(){
+  var s=[].slice.call(document.querySelectorAll('.slide')),i=0,c=document.getElementById('count');
+  function go(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach(function(e,k){e.classList.toggle('active',k===i)});c.textContent=(i+1)+' / '+s.length;history.replaceState(null,'','#s'+(i+1))}
+  var h=parseInt((location.hash||'').replace('#s',''),10);go(isNaN(h)?0:h-1);
+  document.getElementById('prev').onclick=function(){go(i-1)};
+  document.getElementById('next').onclick=function(){go(i+1)};
+  document.addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();go(i+1)}if(['ArrowLeft','PageUp'].indexOf(e.key)>-1)go(i-1);if(e.key==='Home')go(0);if(e.key==='End')go(s.length-1)});
+  var x=null;document.addEventListener('touchstart',function(e){x=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){if(x===null)return;var d=e.changedTouches[0].clientX-x;if(Math.abs(d)>50)go(d<0?i+1:i-1);x=null});
+})();
+</script>
+</body>
+</html>
