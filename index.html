@@ -185,6 +185,52 @@ b,strong{font-weight:600}
 .guse2 .row{padding:0}
 .cb{flex:1;display:flex;flex-direction:column;justify-content:center}
 .perf.cb{flex-direction:row;align-items:center;justify-content:flex-start}
+
+/* ===== versão mobile ===== */
+@media (max-width:760px), (orientation:portrait) and (max-width:1024px){
+  .deck{position:fixed;inset:0;left:0;top:0;width:auto;height:auto;transform:none}
+  .slide{--m:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+    padding:calc(28px + env(safe-area-inset-top,0px)) 20px calc(96px + env(safe-area-inset-bottom,0px))}
+  .slide.cover{justify-content:center}
+  .slide:not(.cover) .inner{display:block;flex:none}
+  .fill{flex:none}
+  .g3,.gacc,.guse,.guse2,.gend,.gmon{grid-template-columns:1fr}
+  .fill>.stack,.gend{grid-auto-rows:auto}
+  .usewrap{display:grid;grid-template-rows:none}
+  .idade,.cities,.reslist,.pglist,.srcl,.gen,.cb,.fill .hbars{flex:none}
+  .idade,.reslist,.fill .hbars{gap:14px;display:flex;flex-direction:column}
+  .srcl{gap:14px}
+  .cities{gap:6px}
+  .pglist{gap:4px}
+  .card{padding:18px}
+  .card.c,.card.sp{justify-content:flex-start}
+  h1{font-size:2.6rem}
+  h2{font-size:22px;margin-bottom:18px}
+  .lead{font-size:1rem}
+  .big{font-size:2rem}
+  .kicker{font-size:.72rem;letter-spacing:.1em}
+  .logo{top:calc(20px + env(safe-area-inset-top,0px));right:20px;font-size:1.1rem}
+  .logo svg{width:28px;height:28px}
+  .slide>p.foot{position:static;margin-top:20px}
+  .gen{gap:18px;padding:8px 0}
+  .donut{width:180px;height:180px}
+  .hb{grid-template-columns:78px 1fr;font-size:.8rem;margin:0}
+  .hb div{font-size:.78rem;white-space:nowrap;gap:6px}
+  .hb i{flex-shrink:1;min-width:6px}
+  .legend.lh{margin-top:14px}
+  .hr{grid-template-columns:36px 1fr}
+  .row{font-size:.85rem}
+  .pg{font-size:.85rem}
+  .perf.cb{gap:18px}
+  .gauge{width:96px;height:96px}
+  .guse2 .row{flex-wrap:wrap}
+  .end .card.x{padding:18px;gap:16px;align-items:flex-start}
+  .xi{width:44px;height:44px;border-radius:12px}
+  .end .x .xn{font-size:26px}
+  .nav{right:auto;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));gap:12px;padding:6px;border-radius:14px;background:rgba(17,19,24,.8);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08)}
+  .nav button{width:44px;height:44px}
+  .progress{top:env(safe-area-inset-top,0px)}
+}
 </style>
 </head>
 <body>
@@ -386,13 +432,13 @@ b,strong{font-weight:600}
 (function(){
   var d=document.getElementById('deck');function fit(){d.style.setProperty('--k',Math.min(innerWidth/1440,innerHeight/810))}fit();addEventListener('resize',fit);
   var s=[].slice.call(document.querySelectorAll('.slide')),i=0,c=document.getElementById('count');
-  function go(n){i=Math.max(0,Math.min(s.length-1,n));document.body.classList.toggle('on-cover',i===0);s.forEach(function(e,k){e.classList.toggle('active',k===i)});c.textContent='Slide '+(i+1)+' de '+s.length;document.getElementById('bar').style.width=((i+1)/s.length*100)+'%';try{history.replaceState(null,'','#s'+(i+1))}catch(err){}}
+  function go(n){i=Math.max(0,Math.min(s.length-1,n));document.body.classList.toggle('on-cover',i===0);s.forEach(function(e,k){e.classList.toggle('active',k===i)});s[i].scrollTop=0;c.textContent='Slide '+(i+1)+' de '+s.length;document.getElementById('bar').style.width=((i+1)/s.length*100)+'%';try{history.replaceState(null,'','#s'+(i+1))}catch(err){}}
   var h=parseInt((location.hash||'').replace('#s',''),10);go(isNaN(h)?0:h-1);
   document.getElementById('prev').onclick=function(){go(i-1)};
   document.getElementById('next').onclick=function(){go(i+1)};
   document.addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();go(i+1)}if(['ArrowLeft','PageUp'].indexOf(e.key)>-1)go(i-1);if(e.key==='Home')go(0);if(e.key==='End')go(s.length-1)});
-  var x=null;document.addEventListener('touchstart',function(e){x=e.touches[0].clientX},{passive:true});
-  document.addEventListener('touchend',function(e){if(x===null)return;var d=e.changedTouches[0].clientX-x;if(Math.abs(d)>50)go(d<0?i+1:i-1);x=null});
+  var x=null,y=null;document.addEventListener('touchstart',function(e){x=e.touches[0].clientX;y=e.touches[0].clientY},{passive:true});
+  document.addEventListener('touchend',function(e){if(x===null)return;var d=e.changedTouches[0].clientX-x,v=e.changedTouches[0].clientY-y;if(Math.abs(d)>60&&Math.abs(d)>Math.abs(v)*1.5)go(d<0?i+1:i-1);x=y=null});
 })();
 </script>
 </body>
