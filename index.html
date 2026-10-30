@@ -19,22 +19,24 @@ html,body{height:100%}
 html{font-size:14px}
 body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:var(--bg1);overflow:hidden}
 .deck{position:absolute;width:1440px;height:810px;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--k,1));transform-origin:center}
+.deck{z-index:1}
 .slide{--m:56px;position:absolute;inset:0;display:none;overflow:hidden;flex-direction:column;justify-content:flex-start;
   padding:var(--m) var(--m) calc(var(--m) + 32px);
-  background:#000}
+  background:transparent}
 .slide.active{display:flex}
 .slide{isolation:isolate}
 .slide.cover{justify-content:center}
 .slide>.inner{position:relative;z-index:2}
 .slide>.logo,.slide>.foot{z-index:2}
 .slide>p.foot{font-size:.85rem;line-height:1.5;color:var(--dim)}
-.slide:not(.cover) .vign{background:rgba(0,0,0,.35)}
+.vign{transition:background .4s}
+body:not(.on-cover) .bgfx .vign{background:rgba(0,0,0,.35)}
 .card{background:rgba(17,19,24,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.bgfx{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bgfx{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
 .bgfx .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.8;mix-blend-mode:screen;will-change:transform}
-.bgfx .o1{width:620px;height:620px;background:radial-gradient(circle,#3a4f9c 0%,transparent 70%);top:-160px;right:-80px;animation:drift1 9s ease-in-out infinite alternate}
-.bgfx .o2{width:520px;height:520px;background:radial-gradient(circle,#a8c83e 0%,transparent 70%);bottom:-220px;right:220px;opacity:.5;animation:drift2 11s ease-in-out infinite alternate}
-.bgfx .o3{width:440px;height:440px;background:radial-gradient(circle,#7f9cec 0%,transparent 70%);top:180px;right:420px;opacity:.42;animation:drift3 8s ease-in-out infinite alternate}
+.bgfx .o1{width:44vmax;height:44vmax;background:radial-gradient(circle,#3a4f9c 0%,transparent 70%);top:-12vmax;right:-6vmax;animation:drift1 9s ease-in-out infinite alternate}
+.bgfx .o2{width:38vmax;height:38vmax;background:radial-gradient(circle,#a8c83e 0%,transparent 70%);bottom:-16vmax;right:15vw;opacity:.5;animation:drift2 11s ease-in-out infinite alternate}
+.bgfx .o3{width:32vmax;height:32vmax;background:radial-gradient(circle,#7f9cec 0%,transparent 70%);top:22vh;right:28vw;opacity:.42;animation:drift3 8s ease-in-out infinite alternate}
 .bgfx .grid{position:absolute;inset:-40px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:48px 48px;
   -webkit-mask-image:radial-gradient(ellipse 70% 70% at 70% 45%,#000 0%,transparent 75%);mask-image:radial-gradient(ellipse 70% 70% at 70% 45%,#000 0%,transparent 75%);animation:gridpan 40s linear infinite}
 .bgfx .rings{position:absolute;top:50%;left:72%;width:900px;height:900px;transform:translate(-50%,-50%)}
@@ -52,7 +54,7 @@ body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;color:v
 @keyframes gridpan{to{transform:translate(48px,48px)}}
 @keyframes breathe{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.04);opacity:1}}
 @media (prefers-reduced-motion:reduce){.bgfx *,.bgfx *::before{animation:none!important}}
-.slide.end{background:#000}
+.slide.end{background:transparent}
 .inner{width:100%;max-width:1120px;margin:0 auto}
 h1{font-weight:600;font-size:62px;line-height:1.05;letter-spacing:-.01em}
 h1 .a{color:var(--lime);display:block}h1 .b{color:var(--blue);display:block;margin-top:.4em}
@@ -85,7 +87,7 @@ h2 em{font-style:normal;color:var(--lime)}
 .stack{display:grid;gap:20px}
 .hb{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:10px;margin:6px 0;font-weight:600;font-size:.88rem}
 .hb div{display:flex;align-items:center;gap:10px;font-weight:400;color:var(--muted)}
-.hb i{display:block;height:24px;border-radius:6px;background:var(--lime)}
+.hb i{display:block;height:14px;border-radius:6px;background:var(--lime)}
 .hb i.m{background:var(--sky)}
 .pg{font-size:.92rem;line-height:1.65}.pg b{font-weight:600}.pg .l{color:var(--lime);font-weight:600}
 .src h4{color:var(--lime);font-weight:600;margin-bottom:2px}.srcl p{color:var(--muted);font-size:.92rem}
@@ -105,7 +107,7 @@ h2 em{font-style:normal;color:var(--lime)}
 .hr{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:12px}
 .hr .m{color:var(--muted);font-size:.85rem;font-weight:600}
 .hr .t{display:flex;align-items:center;gap:10px;min-width:0}
-.hr .b{height:26px;border-radius:4px 8px 8px 4px;background:linear-gradient(90deg,#7f9a2a 0%,var(--lime) 100%);box-shadow:0 6px 18px -10px rgba(168,200,62,.6);transform-origin:left;animation:grow .7s cubic-bezier(.2,.8,.2,1) both}
+.hr .b{height:16px;border-radius:4px 8px 8px 4px;background:linear-gradient(90deg,#7f9a2a 0%,var(--lime) 100%);box-shadow:0 6px 18px -10px rgba(168,200,62,.6);transform-origin:left;animation:grow .7s cubic-bezier(.2,.8,.2,1) both}
 .hr.hi .b{background:linear-gradient(90deg,var(--lime) 0%,#c6e65a 100%);box-shadow:0 6px 22px -8px rgba(168,200,62,.85)}
 .hr .v{font-weight:600;font-size:.95rem;white-space:nowrap}
 .hr.na .b{width:22%;background:repeating-linear-gradient(135deg,#2b3557 0 7px,#202a48 7px 14px);border:1px dashed #44507a;box-shadow:none;animation:none}
@@ -146,6 +148,9 @@ h2 em{font-style:normal;color:var(--lime)}
 .reslist .hb:nth-child(5) i{animation-delay:.32s}
 .reslist .hb:nth-child(6) i{animation-delay:.40s}
 .reslist .hb:nth-child(7) i{animation-delay:.48s}
+.reslist .hb:nth-child(8) i{animation-delay:.56s}
+.reslist .hb:nth-child(9) i{animation-delay:.64s}
+.reslist .hb:nth-child(10) i{animation-delay:.72s}
 .hr:nth-child(2) .b{animation-delay:.08s}.hr:nth-child(4) .b{animation-delay:.16s}.hr:nth-child(5) .b{animation-delay:.24s}
 @media (prefers-reduced-motion:reduce){.idade .bar,.hb i,.donut .seg{animation:none}}
 .srcl{display:flex;flex-direction:column;justify-content:space-evenly;flex:1}
@@ -176,16 +181,20 @@ b,strong{font-weight:600}
 @media (prefers-reduced-motion:reduce){.gauge .gv{animation:none}}
 .legend.lh{display:flex;gap:28px;width:auto}
 .legend.lh div{grid-template-columns:12px auto}
+.cnt{color:var(--muted);font-weight:400}
+.guse2 .row{padding:0}
+.cb{flex:1;display:flex;flex-direction:column;justify-content:center}
+.perf.cb{flex-direction:row;align-items:center;justify-content:flex-start}
 </style>
 </head>
 <body>
+<div class="bgfx" aria-hidden="true">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="vign"></div>
+</div>
 <main class="deck" id="deck">
 
 <section class="slide active cover" aria-label="Capa">
-  <div class="bgfx" aria-hidden="true">
-    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-    <div class="vign"></div>
-  </div>
   <div class="inner">
     <p class="kicker">GOOGLE ANALYTICS · 1 JUN – 30 OUT 2026</p>
     <h1><span class="a">Conecta Fapes</span><span class="b">Análise de Dados</span></h1>
@@ -195,10 +204,6 @@ b,strong{font-weight:600}
 </section>
 
 <section class="slide" aria-label="Público: evolução mensal">
-  <div class="bgfx" aria-hidden="true">
-    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-    <div class="vign"></div>
-  </div>
   <div class="inner">
     <h2>Público: <em>930 usuários ativos</em></h2>
     <div class="grid gmon fill">
@@ -224,54 +229,50 @@ b,strong{font-weight:600}
 </section>
 
 <section class="slide" aria-label="Informações Gerais">
-  <div class="bgfx" aria-hidden="true">
-    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-    <div class="vign"></div>
-  </div>
   <div class="inner">
     <h2>Informações Gerais</h2>
     <div class="grid g3 fill">
       <div class="card">
         <p class="ct">Gênero</p>
         <div class="gen">
-          <svg class="donut" viewBox="0 0 160 160" role="img" aria-label="Gênero: 53,7% mulheres, 46,3% homens">
+          <svg class="donut" viewBox="0 0 160 160" role="img" aria-label="Gênero: 53,5% mulheres, 46,5% homens">
             <circle cx="80" cy="80" r="60" fill="none" stroke="#1d212b" stroke-width="9"/>
-            <circle cx="80" cy="80" r="60" fill="none" stroke="var(--lime)" stroke-width="9" stroke-dasharray="199.4 376.99" transform="rotate(-90 80 80)" class="seg"/>
-            <circle cx="80" cy="80" r="60" fill="none" stroke="var(--sky)" stroke-width="9" stroke-dasharray="171.5 376.99" stroke-dashoffset="-202.4" transform="rotate(-90 80 80)" class="seg"/>
-            <text x="80" y="80" text-anchor="middle" class="dn">53,7%</text>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="var(--lime)" stroke-width="9" stroke-dasharray="198.7 376.99" transform="rotate(-90 80 80)" class="seg"/>
+            <circle cx="80" cy="80" r="60" fill="none" stroke="var(--sky)" stroke-width="9" stroke-dasharray="172.3 376.99" stroke-dashoffset="-201.7" transform="rotate(-90 80 80)" class="seg"/>
+            <text x="80" y="80" text-anchor="middle" class="dn">53,5%</text>
             <text x="80" y="96" text-anchor="middle" class="dl">mulheres</text>
           </svg>
           <div class="legend">
-            <div><i style="background:var(--lime)"></i><span>Mulheres</span><b>53,7%</b></div>
-            <div><i style="background:var(--sky)"></i><span>Homens</span><b>46,3%</b></div>
+            <div><i style="background:var(--lime)"></i><span>Mulheres</span><b>53,5%</b></div>
+            <div><i style="background:var(--sky)"></i><span>Homens</span><b>46,5%</b></div>
           </div>
         </div>
       </div>
       <div class="card">
         <p class="ct">Idade</p>
         <div class="idade">
-        <div><p>18–24 · <b>43,1%</b></p><div class="bar" style="width:86%"></div></div>
-        <div><p>25–34 · <b>30,5%</b></p><div class="bar" style="width:61%"></div></div>
-        <div><p>35–44 · <b>19,4%</b></p><div class="bar" style="width:39%"></div></div>
-        <div><p>45–54 · <b>7,0%</b></p><div class="bar" style="width:14%"></div></div>
+        <div><p>18–24 · <b>42,1%</b> <span class="cnt">(157)</span></p><div class="bar" style="width:86.0%"></div></div>
+        <div><p>25–34 · <b>29,8%</b> <span class="cnt">(111)</span></p><div class="bar" style="width:60.8%"></div></div>
+        <div><p>35–44 · <b>19,8%</b> <span class="cnt">(74)</span></p><div class="bar" style="width:40.5%"></div></div>
+        <div><p>45–54 · <b>8,3%</b> <span class="cnt">(31)</span></p><div class="bar" style="width:17.0%"></div></div>
         </div>
-        <p class="sub">Entre os 341 com idade identificada</p>
+        <p class="sub">Entre os 373 com idade identificada</p>
       </div>
       <div class="card">
         <p class="ct">Cidades</p>
         <div class="cities">
-        <div class="row"><b>Vitória</b><span>347 <span>(40,2%)</span></span></div>
-        <div class="row"><b>Serra</b><span>158 <span>(18,3%)</span></span></div>
-        <div class="row"><b>Vila Velha</b><span>153 <span>(17,7%)</span></span></div>
-        <div class="row"><b style="color:var(--muted)">(não definido)</b><span>70 <span>(8,1%)</span></span></div>
-        <div class="row"><b>Cachoeiro de Itapemirim</b><span>38 <span>(4,4%)</span></span></div>
-        <div class="row"><b>Linhares</b><span>35 <span>(4,1%)</span></span></div>
-        <div class="row"><b>São Paulo</b><span>35 <span>(4,1%)</span></span></div>
-        <div class="row"><b>Colatina</b><span>28 <span>(3,2%)</span></span></div>
-        <div class="row"><b>Rio de Janeiro</b><span>25 <span>(2,9%)</span></span></div>
-        <div class="row"><b>Viana</b><span>24 <span>(2,8%)</span></span></div>
+        <div class="row"><b>Vitória</b><span>380 <span>(40,9%)</span></span></div>
+        <div class="row"><b>Serra</b><span>172 <span>(18,5%)</span></span></div>
+        <div class="row"><b>Vila Velha</b><span>163 <span>(17,6%)</span></span></div>
+        <div class="row"><b style="color:var(--muted)">(não definido)</b><span>75 <span>(8,1%)</span></span></div>
+        <div class="row"><b>Cachoeiro de Itapemirim</b><span>40 <span>(4,3%)</span></span></div>
+        <div class="row"><b>São Paulo</b><span>39 <span>(4,2%)</span></span></div>
+        <div class="row"><b>Linhares</b><span>35 <span>(3,8%)</span></span></div>
+        <div class="row"><b>Colatina</b><span>33 <span>(3,6%)</span></span></div>
+        <div class="row"><b>São Mateus</b><span>26 <span>(2,8%)</span></span></div>
+        <div class="row"><b>Rio de Janeiro</b><span>25 <span>(2,7%)</span></span></div>
         </div>
-        <p class="note">Grande Vitória: 79%</p>
+        <p class="note">Vitória, Serra e Vila Velha: 77%</p>
       </div>
     </div>
   </div>
@@ -279,28 +280,27 @@ b,strong{font-weight:600}
 </section>
 
 <section class="slide" aria-label="Acesso">
-  <div class="bgfx" aria-hidden="true">
-    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-    <div class="vign"></div>
-  </div>
   <div class="inner">
     <h2>Acesso</h2>
     <div class="grid gacc fill">
       <div class="stack">
-        <div class="card c"><p class="big l">71%</p><p>usam Desktop</p><p class="sub">28,4% mobile · 0,6% tablet</p></div>
-        <div class="card c"><p class="big l">58,5%</p><p>usam Windows</p><p class="sub">Android 16,2% · iOS 12,7% · Mac 6,1%</p></div>
-        <div class="card c"><p class="big l">74%</p><p>usam Chrome</p><p class="sub">depois Safari, Edge e Firefox</p></div>
+        <div class="card c"><p class="big l">71,6%</p><p>usam Desktop</p><p class="sub">28,7% mobile · 0,5% tablet</p></div>
+        <div class="card c"><p class="big l">59,2%</p><p>usam Windows</p><p class="sub">Android 16,6% · iOS 12,6% · Mac 6,1% · Linux 5,7%</p></div>
+        <div class="card c"><p class="big l">73,7%</p><p>usam Chrome</p><p class="sub">Safari 10,8% · Edge 9,0% · Firefox 2,8% · Opera 2,5% · Outros 1,2%</p></div>
       </div>
       <div class="card">
         <p class="ct">Resoluções de tela mais comuns</p>
         <div class="reslist">
-        <div class="hb">1920x1080<div><i style="width:80%"></i>270 (31,3%)</div></div>
-        <div class="hb">1536x864<div><i style="width:31%"></i>104 (12,0%)</div></div>
-        <div class="hb">1366x768<div><i style="width:26%"></i>87 (10,1%)</div></div>
-        <div class="hb">390x844<div><i class="m" style="width:10.5%"></i>35 (4,1%)</div></div>
-        <div class="hb">384x832<div><i class="m" style="width:10%"></i>34 (3,9%)</div></div>
-        <div class="hb">1280x720<div><i style="width:8%"></i>27 (3,1%)</div></div>
-        <div class="hb">1600x900<div><i style="width:7.5%"></i>25 (2,9%)</div></div>
+        <div class="hb">1920x1080<div><i style="width:80.0%"></i>283 (30,5%)</div></div>
+        <div class="hb">1536x864<div><i style="width:32.8%"></i>116 (12,5%)</div></div>
+        <div class="hb">1366x768<div><i style="width:26.9%"></i>95 (10,2%)</div></div>
+        <div class="hb">384x832<div><i class="m" style="width:10.7%"></i>38 (4,1%)</div></div>
+        <div class="hb">390x844<div><i class="m" style="width:10.5%"></i>37 (4,0%)</div></div>
+        <div class="hb">1280x720<div><i style="width:8.8%"></i>31 (3,3%)</div></div>
+        <div class="hb">1600x900<div><i style="width:7.9%"></i>28 (3,0%)</div></div>
+        <div class="hb">393x852<div><i class="m" style="width:7.9%"></i>28 (3,0%)</div></div>
+        <div class="hb">1440x900<div><i style="width:6.5%"></i>23 (2,5%)</div></div>
+        <div class="hb">2560x1080<div><i style="width:5.4%"></i>19 (2,1%)</div></div>
         </div>
         <div class="legend lh"><div><i style="background:var(--lime)"></i><span>Desktop</span></div><div><i style="background:var(--sky)"></i><span>Celular</span></div></div>
       </div>
@@ -310,41 +310,40 @@ b,strong{font-weight:600}
 </section>
 
 <section class="slide" aria-label="Uso">
-  <div class="bgfx" aria-hidden="true">
-    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-    <div class="vign"></div>
-  </div>
   <div class="inner">
     <h2>Uso</h2>
     <div class="usewrap fill">
     <div class="grid guse">
       <div class="card pg">
-        <p class="ct">Páginas mais vistas (% de 21.726 visualizações)</p>
+        <p class="ct">Páginas mais vistas</p>
+        <p class="sub" style="margin:-4px 0 6px">O usuário pode visitar mais de uma página. Cada página é relativa a 100%.</p>
         <div class="pglist">
-        <p>/login · <b>27,5%</b></p>
-        <p>/minhas-informacoes · <b>22,4%</b></p>
-        <p>/início · <b>20,1%</b></p>
-        <p>/minha-equipe · <b>11,9%</b></p>
-        <p>/meu-projeto · <b>4,1%</b></p>
-        <p>/pagamentos · <b>4,1%</b></p>
-        <p>/guia-do-usuario · <b>0,75%</b></p>
-        <p>/remanejamento · <b>0,47%</b></p>
+        <p>/login · <b>98,7%</b> <span class="cnt">(917)</span></p>
+        <p>/início · <b>82,0%</b> <span class="cnt">(762)</span></p>
+        <p>/login/AuthAcessoCidadao/portal · <b>74,5%</b> <span class="cnt">(692)</span></p>
+        <p>/minhas-informacoes · <b>66,5%</b> <span class="cnt">(618)</span></p>
+        <p>/pagamentos · <b>35,0%</b> <span class="cnt">(325)</span></p>
+        <p>/meu-projeto · <b>29,7%</b> <span class="cnt">(276)</span></p>
+        <p>/guia-do-usuario · <b>12,0%</b> <span class="cnt">(111)</span></p>
+        <p>/minha-equipe · <b>8,8%</b> <span class="cnt">(82)</span></p>
+        <p>/minha-equipe/cadastrar-bolsista · <b>4,7%</b> <span class="cnt">(44)</span></p>
+        <p>/prestacao-financeira · <b>0,4%</b> <span class="cnt">(4)</span></p>
         </div>
       </div>
       <div class="card src">
         <p class="ct">Como os usuários chegam</p>
         <div class="srcl">
-        <div><h4>Direto · 500 (58%)</h4><p>Digitou o endereço no navegador.</p></div>
-        <div><h4>Busca orgânica · 312 (36%)</h4><p>Resultados de buscadores como Google.</p></div>
-        <div><h4>Referência · 50 (6%)</h4><p>Link em outro site (ex.: portal da Fapes).</p></div>
+        <div><h4>Direto · 533 (57%)</h4><p>Digitou o endereço no navegador.</p></div>
+        <div><h4>Busca orgânica · 343 (37%)</h4><p>Resultados de buscadores como Google.</p></div>
+        <div><h4>Referência · 54 (6%)</h4><p>Link em outro site (ex.: portal da Fapes).</p></div>
         </div>
       </div>
     </div>
     <div class="grid guse2">
-      <div class="card c"><p class="ct">Tempo médio de uso</p><p class="big l">6 min 13 s</p><p class="sub">de engajamento por usuário</p></div>
-      <div class="card c">
+      <div class="card"><p class="ct">Tempo médio de uso</p><div class="cb"><p class="big l">6 min 24 s</p><p class="sub">de engajamento por usuário</p></div></div>
+      <div class="card">
         <div class="row"><p class="ct">Performance do sistema</p><span class="sub">7.086 pageviews</span></div>
-        <div class="perf">
+        <div class="perf cb">
           <svg class="gauge" viewBox="0 0 100 100" role="img" aria-label="Performance: 77 de 100">
             <circle cx="50" cy="50" r="42" fill="none" stroke="#23262f" stroke-width="7"/>
             <circle cx="50" cy="50" r="42" fill="none" stroke="var(--lime)" stroke-width="7" stroke-linecap="round" stroke-dasharray="263.89" stroke-dashoffset="60.69" transform="rotate(-90 50 50)" class="gv"/>
@@ -362,17 +361,13 @@ b,strong{font-weight:600}
 </section>
 
 <section class="slide end" aria-label="Extra">
-  <div class="bgfx" aria-hidden="true">
-    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-    <div class="vign"></div>
-  </div>
   <div class="inner">
     <h2>Extra</h2>
     <div class="grid gend fill">
       <div class="card x"><div class="xi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><div class="xb"><p class="xn">0<span>páginas de erro</span></p><h3>Sem páginas de erro</h3><p>O usuário não é mais levado para páginas de erro (403, 404 e 500).</p></div></div>
       <div class="card x"><div class="xi" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></div><div class="xb"><p class="xn">28%<span>no celular</span></p><h3>De 0 a 28% no celular</h3><p>De um sistema não responsivo para 28% dos usuários no mobile.</p></div></div>
       <div class="card x"><div class="xi" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M6 18h6M9 14v4"/><rect x="17" y="9" width="5" height="11" rx="1"/></svg></div><div class="xb"><p class="xn">4<span>tipos de tela</span></p><h3>Responsividade</h3><p>As telas funcionam em desktop, mobile, tablet e TV.</p></div></div>
-      <div class="card x"><div class="xi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div class="xb"><p class="xn">76%<span>na Grande Vitória</span></p><h3>Espaço no interior</h3><p>76% está na Grande Vitória: é possível expandir para o interior.</p></div></div>
+      <div class="card x"><div class="xi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div class="xb"><p class="xn">77%<span>na Grande Vitória</span></p><h3>Espaço no interior</h3><p>77% está na Grande Vitória: é possível expandir para o interior.</p></div></div>
       <div class="card x"><div class="xi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="xb"><p class="xn">77<span>de 100</span></p><h3>Sistema mais rápido</h3><p>Nota 77/100: é possível deixar o sistema ainda mais ágil.</p></div></div>
       <div class="card x"><div class="xi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg></div><div class="xb"><p class="xn">IA<span>nova origem</span></p><h3>Busca em IA</h3><p>Há usuários que encontram o sistema em pesquisas com IA, como o ChatGPT.</p></div></div>
     </div>
@@ -391,7 +386,7 @@ b,strong{font-weight:600}
 (function(){
   var d=document.getElementById('deck');function fit(){d.style.setProperty('--k',Math.min(innerWidth/1440,innerHeight/810))}fit();addEventListener('resize',fit);
   var s=[].slice.call(document.querySelectorAll('.slide')),i=0,c=document.getElementById('count');
-  function go(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach(function(e,k){e.classList.toggle('active',k===i)});c.textContent='Slide '+(i+1)+' de '+s.length;document.getElementById('bar').style.width=((i+1)/s.length*100)+'%';try{history.replaceState(null,'','#s'+(i+1))}catch(err){}}
+  function go(n){i=Math.max(0,Math.min(s.length-1,n));document.body.classList.toggle('on-cover',i===0);s.forEach(function(e,k){e.classList.toggle('active',k===i)});c.textContent='Slide '+(i+1)+' de '+s.length;document.getElementById('bar').style.width=((i+1)/s.length*100)+'%';try{history.replaceState(null,'','#s'+(i+1))}catch(err){}}
   var h=parseInt((location.hash||'').replace('#s',''),10);go(isNaN(h)?0:h-1);
   document.getElementById('prev').onclick=function(){go(i-1)};
   document.getElementById('next').onclick=function(){go(i+1)};
